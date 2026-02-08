@@ -1,0 +1,37 @@
+FROM archlinux:latest
+
+# system update
+RUN pacman --noconfirm -Syu
+
+# version control
+RUN pacman -S --noconfirm  git 
+
+# c support
+RUN pacman -S --noconfirm gcc
+RUN pacman -S --noconfirm make
+
+# dotnet
+RUN pacman -S --noconfirm dotnet-sdk-8.0
+
+# golang
+RUN pacman -S --noconfirm go
+
+# utilities
+RUN pacman -S --noconfirm nodejs \
+	npm \
+	unzip \
+	ripgrep
+
+# neovim
+RUN pacman -S --noconfirm neovim
+
+RUN useradd nash
+USER nash
+
+WORKDIR /home/nash
+RUN mkdir .config
+RUN mkdir development
+
+RUN git clone https://github.com/jayson-nacional/neovim-config.git /home/nash/.config/nvim
+
+CMD ["/bin/bash"]
