@@ -6,6 +6,9 @@ RUN pacman --noconfirm -Syu
 # version control
 RUN pacman -S --noconfirm  git 
 
+# multiplexer
+RUN pacman -S --noconfirm tmux
+
 # openssh
 RUN pacman -S --noconfirm openssh
 
