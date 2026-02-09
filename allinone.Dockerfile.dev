@@ -6,6 +6,9 @@ RUN pacman --noconfirm -Syu
 # version control
 RUN pacman -S --noconfirm  git 
 
+# openssh
+RUN pacman -S --noconfirm openssh
+
 # c support
 RUN pacman -S --noconfirm gcc
 RUN pacman -S --noconfirm make
@@ -29,8 +32,10 @@ RUN useradd nash
 USER nash
 
 WORKDIR /home/nash
-RUN mkdir .config
+
 RUN mkdir development
+RUN mkdir .ssh
+RUN mkdir .config
 
 RUN git clone https://github.com/jayson-nacional/neovim-config.git /home/nash/.config/nvim
 
