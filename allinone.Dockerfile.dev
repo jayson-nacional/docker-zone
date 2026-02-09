@@ -15,6 +15,7 @@ RUN pacman -S --noconfirm make
 
 # dotnet
 RUN pacman -S --noconfirm dotnet-sdk-8.0
+RUN pacman -S --noconfirm aspnet-runtime-8.0
 
 # golang
 RUN pacman -S --noconfirm go
@@ -36,6 +37,10 @@ WORKDIR /home/nash
 RUN mkdir development
 RUN mkdir .ssh
 RUN mkdir .config
+
+# omnisharp decompilation support
+RUN mkdir .omnisharp
+RUN echo '{ "RoslynExtensionsOptions": { "enableDecompilationSupport": true } }' > .omnisharp/omnisharp.json
 
 RUN git clone https://github.com/jayson-nacional/neovim-config.git /home/nash/.config/nvim
 
