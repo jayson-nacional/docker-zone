@@ -1,4 +1,5 @@
 FROM archlinux:latest
+ARG CONTAINER_USER
 
 # system update
 RUN pacman --noconfirm -Syu
@@ -40,11 +41,10 @@ RUN pacman -S --noconfirm nodejs \
 # neovim
 RUN pacman -S --noconfirm neovim
 
-ENV USER=nash
-RUN useradd $USER
-USER $USER
+RUN useradd $CONTAINER_USER
+USER $CONTAINER_USER
 
-WORKDIR /home/$USER
+WORKDIR /home/$CONTAINER_USER
 
 SHELL ["/usr/bin/zsh", "-c"]
 RUN mkdir development

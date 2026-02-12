@@ -1,0 +1,13 @@
+services:
+  dev_container:
+    container_name: zone
+    stdin_open: true
+    tty: true
+    build:
+      args:
+        CONTAINER_USER: "${DOCKER_USER}"
+      dockerfile: ./allinone.Dockerfile.dev
+    image: arch:workspace
+    volumes:
+      - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
+      - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
