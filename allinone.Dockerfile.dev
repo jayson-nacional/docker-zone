@@ -9,6 +9,14 @@ RUN pacman -S --noconfirm  git
 # multiplexer
 RUN pacman -S --noconfirm tmux
 
+# zsh
+RUN pacman -S --noconfirm zsh \
+	zsh-completions
+
+# terminal
+RUN pacman -S --noconfirm ncurses
+ENV TERM=alacritty
+
 # openssh
 RUN pacman -S --noconfirm openssh
 
@@ -32,11 +40,13 @@ RUN pacman -S --noconfirm nodejs \
 # neovim
 RUN pacman -S --noconfirm neovim
 
-RUN useradd nash
-USER nash
+ENV USER=nash
+RUN useradd $USER
+USER $USER
 
-WORKDIR /home/nash
+WORKDIR /home/$USER
 
+SHELL ["/usr/bin/zsh", "-c"]
 RUN mkdir development
 RUN mkdir .ssh
 RUN mkdir .config
@@ -45,6 +55,14 @@ RUN mkdir .config
 RUN mkdir .omnisharp
 RUN echo '{ "RoslynExtensionsOptions": { "enableDecompilationSupport": true } }' > .omnisharp/omnisharp.json
 
-RUN git clone https://github.com/jayson-nacional/neovim-config.git /home/nash/.config/nvim
+# configs
+RUN git clone https://github.com/jayson-nacional/neovim-config.git .config/nvim
+RUN git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
+RUN git clone https://github.com/jayson-nacional/tmux-config.git .config/tmux
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
-CMD ["/bin/bash"]
+COPY .zshrc .
+COPY .p10k.zsh .
+
+CMD ["/bin/zsh"]
