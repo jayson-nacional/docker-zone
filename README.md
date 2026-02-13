@@ -12,10 +12,10 @@ Voila!  a docker image definition that is pre-loaded with tools to help you beco
 3.  The current config utilizes the environment variable ```DOCKER_USER``` to setup the container user. To set a temporary value, run ```export DOCKER_USER={name of your choice}```.  To make this variable value permanent, simply add it on your shell config (i.e. ~/.bashrc or ~/.zshrc).
 4.  The script also assumes that you have a *projects* folder on your home directory. If none, add as needed. This is mounted and routed to the *development* folder of the container.
 5.  Navigate to the cloned directory and fire up ```docker compose up -d```. The argument ```-d``` ensures that the container is running in detached mode.
-6.  Once the container is created, you can simply connect to the container's terminal using the command ```docker run -it {container id} zsh```. To know the container id, just simply run ```docker ps```. You don't have to type the whole id, just the first few characters would be enough as long as it doesn't conflict with other existing running containers, if there is any.
+6.  Once the container is created, you can simply connect to the container's terminal using the command ```docker exec -it {container id} zsh```. To know the container id, just simply run ```docker ps```. You don't have to type the whole id, just the first few characters would be enough as long as it doesn't conflict with other existing running containers, if there is any.  
+7. Start coding again! When you initially fire up neovim for the first time, it will take a few seconds to completely install all the plugins. Store your coding projects inside the development folder to ensure that it is persisted to the host's file system.  
 
 ## Rationale  
---- 
 Why *Arch* distro? So you can proudly say, *"I use arch by the way"*.  
 
 Arch, though not the smallest in size in terms of images, ensures that you get the latest packages which is critical for software development. Ubuntu for example (at the time of writing), ships a lower version of neovim that doesn't support the *lazy* package manager. Other candidates such as *Alpine* is also available but it has been known to have some issues especially with debugging capabilities. This image is to be built as a container for development and not production deployment.  
