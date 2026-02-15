@@ -11,3 +11,5 @@ services:
     volumes:
       - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
       - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
+    ports:
+      - "8080:80"

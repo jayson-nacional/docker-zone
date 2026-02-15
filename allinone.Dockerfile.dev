@@ -21,6 +21,9 @@ ENV TERM=alacritty
 # openssh
 RUN pacman -S --noconfirm openssh
 
+# sql
+RUN pacman -S --noconfirm mariadb-clients
+
 # c support
 RUN pacman -S --noconfirm gcc
 RUN pacman -S --noconfirm make
@@ -37,6 +40,9 @@ RUN pacman -S --noconfirm nodejs \
 	npm \
 	unzip \
 	ripgrep
+
+# misc
+RUN pacman -S --noconfirm httpie
 
 # neovim
 RUN pacman -S --noconfirm neovim
@@ -61,6 +67,10 @@ RUN git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
 RUN git clone https://github.com/jayson-nacional/tmux-config.git .config/tmux
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+# dotnet utilities
+RUN dotnet tool install -g Microsoft.dotnet-httprepl
+RUN dotnet tool install --global dotnet-ef
 
 COPY .zshrc .
 COPY .p10k.zsh .
