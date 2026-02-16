@@ -24,6 +24,9 @@ RUN pacman -S --noconfirm openssh
 # sql
 RUN pacman -S --noconfirm mariadb-clients
 
+# api testing
+RUN pacman -S --noconfirm atac
+
 # c support
 RUN pacman -S --noconfirm gcc
 RUN pacman -S --noconfirm make
@@ -40,9 +43,6 @@ RUN pacman -S --noconfirm nodejs \
 	npm \
 	unzip \
 	ripgrep
-
-# misc
-RUN pacman -S --noconfirm httpie
 
 # neovim
 RUN pacman -S --noconfirm neovim
