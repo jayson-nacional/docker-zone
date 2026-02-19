@@ -32,8 +32,8 @@ RUN pacman -S --noconfirm gcc
 RUN pacman -S --noconfirm make
 
 # dotnet
-RUN pacman -S --noconfirm dotnet-sdk-8.0
-RUN pacman -S --noconfirm aspnet-runtime-8.0
+RUN pacman -S --noconfirm dotnet-sdk-10.0
+RUN pacman -S --noconfirm aspnet-runtime-10.0
 
 # golang
 RUN pacman -S --noconfirm go
@@ -71,6 +71,7 @@ RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUST
 # dotnet utilities
 RUN dotnet tool install -g Microsoft.dotnet-httprepl
 RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-aspnet-codegenerator
 
 COPY .zshrc .
 COPY .p10k.zsh .
