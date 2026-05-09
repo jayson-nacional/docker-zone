@@ -1,0 +1,75 @@
+FROM archlinux:base-devel
+ARG CONTAINER_USER
+
+# system update
+RUN pacman --noconfirm -Syu
+
+# version control
+RUN pacman -S --noconfirm  git 
+
+# multiplexer
+RUN pacman -S --noconfirm tmux
+
+# zsh
+RUN pacman -S --noconfirm zsh \
+	zsh-completions
+
+# terminal
+RUN pacman -S --noconfirm ncurses
+ENV TERM=alacritty
+
+# openssh
+RUN pacman -S --noconfirm openssh
+
+# sql
+RUN pacman -S --noconfirm mariadb-clients
+
+# api testing
+RUN pacman -S --noconfirm atac
+
+# dotnet
+RUN pacman -S --noconfirm dotnet-sdk-10.0
+RUN pacman -S --noconfirm aspnet-runtime-10.0
+
+# utilities
+RUN pacman -S --noconfirm nodejs \
+	npm \
+	unzip \
+	ripgrep
+
+# neovim
+RUN pacman -S --noconfirm neovim
+
+RUN useradd $CONTAINER_USER
+USER $CONTAINER_USER
+
+WORKDIR /home/$CONTAINER_USER
+
+SHELL ["/usr/bin/zsh", "-c"]
+RUN mkdir development
+RUN mkdir .ssh
+RUN mkdir .config
+
+# omnisharp decompilation support
+RUN mkdir .omnisharp
+RUN echo '{ "RoslynExtensionsOptions": { "enableDecompilationSupport": true } }' > .omnisharp/omnisharp.json
+
+# configs
+RUN git clone https://github.com/jayson-nacional/neovim-config.git .config/nvim
+COPY ./mason-lsp-config.lua .config/nvim/lua/config/
+COPY ./nvim-treesitter-config.lua .config/nvim/lua/config/
+
+RUN git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
+RUN git clone https://github.com/jayson-nacional/tmux-config.git .config/tmux
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+# dotnet utilities
+RUN dotnet tool install -g Microsoft.dotnet-httprepl
+RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-aspnet-codegenerator
+
+COPY ./.zshrc .
+COPY ./.p10k.zsh .
+
+CMD ["/bin/zsh"]
