@@ -1,0 +1,66 @@
+services:
+  php_workspace:
+    container_name: php_workspace
+    stdin_open: true
+    tty: true
+    build:
+      args:
+        CONTAINER_USER: "${DOCKER_USER}"
+      dockerfile: ./workspace/php.dockerfile.dev
+    image: php_workspace
+    volumes:
+      - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
+      - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
+    networks:
+      - php_network  
+
+  php_fpm:
+    container_name: php_fpm
+    build:
+      dockerfile: ./fpm/php-fpm.dockerfile.dev
+    image: php_fpm
+    volumes:
+      - "${HOME}/projects:/var/www/html:ro"
+    networks:
+      - php_network
+
+  php_nginx:
+    container_name: php_nginx
+    build:
+      dockerfile: ./nginx/nginx.dockerfile.dev
+    image: php_nginx
+    volumes:
+      - "${HOME}/projects:/var/www/html:ro"
+    ports:
+      - 6060:80
+    networks:
+      - php_network
+    depends_on:
+      - php_fpm
+
+  php_mariadb:
+    container_name: php_mariadb
+    image: mariadb:12-ubi
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: passwordhere
+    volumes:
+      - "${HOME}/data:/var/lib/mysql:rw"
+    networks:
+      - php_network
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:5.2.3-apache
+    restart: always
+    environment:
+      - PMA_HOST=php_mariadb
+    ports:
+      - 9090:80
+    networks:
+      - php_network
+
+networks:
+  php_network:
+    name: php_network
+    driver: bridge

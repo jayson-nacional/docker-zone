@@ -27,16 +27,10 @@ RUN pacman -S --noconfirm mariadb-clients
 # api testing
 RUN pacman -S --noconfirm atac
 
-# c support
-RUN pacman -S --noconfirm gcc
-RUN pacman -S --noconfirm make
-
-# dotnet
-RUN pacman -S --noconfirm dotnet-sdk-10.0
-RUN pacman -S --noconfirm aspnet-runtime-10.0
-
-# golang
-RUN pacman -S --noconfirm go
+# php
+RUN pacman -S --noconfirm php
+RUN pacman -S --noconfirm composer
+COPY ./workspace/extensions.ini /etc/php/conf.d/
 
 # utilities
 RUN pacman -S --noconfirm nodejs \
@@ -57,23 +51,17 @@ RUN mkdir development
 RUN mkdir .ssh
 RUN mkdir .config
 
-# omnisharp decompilation support
-RUN mkdir .omnisharp
-RUN echo '{ "RoslynExtensionsOptions": { "enableDecompilationSupport": true } }' > .omnisharp/omnisharp.json
-
 # configs
 RUN git clone https://github.com/jayson-nacional/neovim-config.git .config/nvim
+COPY ./workspace/mason-lsp-config.lua .config/nvim/lua/config/
+COPY ./workspace/nvim-treesitter-config.lua .config/nvim/lua/config/
+
 RUN git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
 RUN git clone https://github.com/jayson-nacional/tmux-config.git .config/tmux
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
 
-# dotnet utilities
-RUN dotnet tool install -g Microsoft.dotnet-httprepl
-RUN dotnet tool install --global dotnet-ef
-RUN dotnet tool install --global dotnet-aspnet-codegenerator
-
-COPY .zshrc .
-COPY .p10k.zsh .
+COPY ./workspace/.zshrc .
+COPY ./workspace/.p10k.zsh .
 
 CMD ["/bin/zsh"]

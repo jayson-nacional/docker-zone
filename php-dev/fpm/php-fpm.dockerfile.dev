@@ -1,0 +1,5 @@
+FROM php:8.5-fpm
+
+RUN docker-php-ext-install pdo_mysql
+
+COPY ./fpm/docker-fpm.conf /usr/local/etc/php-fpm.d/docker.conf
