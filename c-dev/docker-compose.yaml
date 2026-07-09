@@ -1,0 +1,20 @@
+services:
+  c_workspace:
+    container_name: c_workspace
+    stdin_open: true
+    tty: true
+    build:
+      args:
+        CONTAINER_USER: "${DOCKER_USER}"
+      dockerfile: c.dockerfile.dev
+    image: c_workspace
+    volumes:
+      - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
+      - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
+    networks:
+      - c_network
+
+networks:
+  c_network:
+    name: c_network
+    driver: bridge
