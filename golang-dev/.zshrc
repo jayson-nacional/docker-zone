@@ -11,3 +11,5 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export LS_COLORS=$LS_COLORS:'di=34'
+export PATH=$PATH:/usr/local/go/bin
+export PATH="$PATH:$(go env GOPATH)/bin"
