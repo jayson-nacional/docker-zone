@@ -6,15 +6,27 @@ services:
     build:
       args:
         CONTAINER_USER: "${DOCKER_USER}"
-      dockerfile: go.dockerfile.dev
+      dockerfile: ./workspace/go.dockerfile.dev
     image: go_workspace
     volumes:
       - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
       - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
     networks:
-      - go_network
+      - docker_network
+
+  go_nginx:
+    container_name: go_nginx
+    build:
+      dockerfile: ./nginx/nginx.dockerfile.dev
+    image: go_nginx
+    volumes:
+      - "${HOME}/projects:/var/www/html:ro"
+    ports:
+      - 9090:80
+    networks:
+      - docker_network
 
 networks:
-  go_network:
-    name: go_network
+  docker_network:
+    name: docker_network
     driver: bridge

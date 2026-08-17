@@ -1,0 +1,25 @@
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:12-ubi
+    restart: always
+    volumes:
+      - "${HOME}/data:/var/lib/mysql:rw"
+    networks:
+      - docker_network
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:5.2.3-apache
+    restart: always
+    environment:
+      - PMA_HOST=mariadb
+    ports:
+      - 3030:80
+    networks:
+      - docker_network
+
+networks:
+  docker_network:
+    name: docker_network
+    driver: bridge

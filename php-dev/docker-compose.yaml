@@ -12,7 +12,7 @@ services:
       - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
       - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
     networks:
-      - php_network  
+      - docker_network  
 
   php_fpm:
     container_name: php_fpm
@@ -22,7 +22,7 @@ services:
     volumes:
       - "${HOME}/projects:/var/www/html:ro"
     networks:
-      - php_network
+      - docker_network
 
   php_nginx:
     container_name: php_nginx
@@ -34,33 +34,11 @@ services:
     ports:
       - 6060:80
     networks:
-      - php_network
+      - docker_network
     depends_on:
       - php_fpm
 
-  php_mariadb:
-    container_name: php_mariadb
-    image: mariadb:12-ubi
-    restart: always
-    environment:
-      MARIADB_ROOT_PASSWORD: passwordhere
-    volumes:
-      - "${HOME}/data:/var/lib/mysql:rw"
-    networks:
-      - php_network
-
-  phpmyadmin:
-    container_name: phpmyadmin
-    image: phpmyadmin:5.2.3-apache
-    restart: always
-    environment:
-      - PMA_HOST=php_mariadb
-    ports:
-      - 9090:80
-    networks:
-      - php_network
-
 networks:
-  php_network:
-    name: php_network
+  docker_network:
+    name: docker_network
     driver: bridge
