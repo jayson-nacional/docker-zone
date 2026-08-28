@@ -8,6 +8,8 @@ services:
         CONTAINER_USER: "${DOCKER_USER}"
       dockerfile: ./workspace/go.dockerfile.dev
     image: go_workspace
+    environment:
+      - SQL_DSN
     volumes:
       - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
       - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"

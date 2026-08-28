@@ -1,8 +1,11 @@
 local lsp_setup = require("config/lsp_setup")
 local language_servers = {
+	"ts_ls",
+	"jsonls",
+	"cssls",
+	"html",
 	"emmylua_ls",
-	"omnisharp",
-	"jsonls"
+	"emmet_language_server"
 }
 
 for _, language_server in ipairs(language_servers) do
@@ -11,26 +14,6 @@ for _, language_server in ipairs(language_servers) do
 		capabilities = lsp_setup.capabilities
 	})
 end
-
-vim.lsp.config('omnisharp', {
-	settings = {
-		FormattingOptions = {
-			EnableEditorConfigSupport = true,
-			OrganizeImports = nil,
-		},
-		MsBuild = {
-			LoadProjectsOnDemand = nil,
-		},
-		RoslynExtensionsOptions = {
-			EnableAnalyzersSupport = nil,
-			EnableImportCompletion = nil,
-			AnalyzeOpenDocumentsOnly = nil,
-		},
-		Sdk = {
-			IncludePrereleases = true,
-		},
-	}
-})
 
 vim.lsp.config('emmylua_ls', {
 	settings = {

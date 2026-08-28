@@ -1,12 +1,8 @@
 local lsp_setup = require("config/lsp_setup")
 local language_servers = {
-	"ts_ls",
-	"jsonls",
-	"cssls",
-	"html",
 	"emmylua_ls",
-	"emmet_language_server",
-	"gopls"
+	"gopls",
+	"jsonls"
 }
 
 for _, language_server in ipairs(language_servers) do
