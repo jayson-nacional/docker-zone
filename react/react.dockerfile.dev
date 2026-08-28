@@ -33,17 +33,13 @@ USER $CONTAINER_USER
 
 WORKDIR /home/$CONTAINER_USER
 
-COPY ./.zshrc .
-COPY ./.p10k.zsh .
+# nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
 
 SHELL ["/usr/bin/zsh", "-c"]
 RUN mkdir development
 RUN mkdir .ssh
 RUN mkdir .config
-
-# node
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash
-RUN . ~/.zshrc && nvm install --lts
 
 # configs
 RUN git clone https://github.com/jayson-nacional/neovim-config.git .config/nvim
@@ -54,5 +50,11 @@ RUN git clone https://github.com/tmux-plugins/tpm .tmux/plugins/tpm
 RUN git clone https://github.com/jayson-nacional/tmux-config.git .config/tmux
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+COPY ./.zshrc .
+COPY ./.p10k.zsh .
+
+# node
+RUN . ~/.zshrc && nvm install --lts
 
 CMD ["/bin/zsh"]
