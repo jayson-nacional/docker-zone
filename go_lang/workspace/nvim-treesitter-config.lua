@@ -1,13 +1,8 @@
-require 'nvim-treesitter'.setup {
-	ensure_installed = { "json", "lua", "go" },
+local parser_dir = vim.fn.stdpath('data') .. '/site'
+vim.opt.runtimepath:prepend(parser_dir)
 
-	sync_install = false,
-
-	highlight = {
-		enable = true,
-	},
-
-	indent = {
-		enable = true
-	},
+require('nvim-treesitter').setup {
+	install_dir = parser_dir
 }
+
+require('nvim-treesitter').install { 'json', 'lua', 'go' }

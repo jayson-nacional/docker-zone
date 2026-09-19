@@ -24,7 +24,7 @@ services:
     volumes:
       - "${HOME}/projects:/var/www/html:ro"
     ports:
-      - 9090:80
+      - "9090:80"
     networks:
       - docker_network
 
