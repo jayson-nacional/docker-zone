@@ -5,4 +5,4 @@ require('nvim-treesitter').setup {
 	install_dir = parser_dir
 }
 
-require('nvim-treesitter').install { 'lua', 'c', 'typescript', 'json', 'css', 'html', 'yaml' }
+require('nvim-treesitter').install { 'lua', 'c', 'typescript', 'json', 'css', 'html', 'javascript' }
