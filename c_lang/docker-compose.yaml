@@ -11,6 +11,8 @@ services:
     volumes:
       - "${HOME}/.ssh:/home/${DOCKER_USER}/.ssh:ro"
       - "${HOME}/projects:/home/${DOCKER_USER}/development:rw"
+      - "${HOME}/docker/nvim/data:/home/${DOCKER_USER}/.local/share/nvim:rw"
+      - "${HOME}/docker/nvim/state:/home/${DOCKER_USER}/.local/state/nvim:rw"
     networks:
       - c_network
 
